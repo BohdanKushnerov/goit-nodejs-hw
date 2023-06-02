@@ -5,11 +5,49 @@ const {
   addContact,
 } = require("./contacts");
 
-// =====просто функции для проверки===============================================
-// listContacts().then(console.log);
-// getContactById("rsKkOQUi80UsgVPCcLZZW").then(console.log);
-// removeContact("rsKkOQUi80UsgVPCcLZZW").then(console.log);
-addContact("Allen Raymond", "nulla.ante@vestibul.co.uk", "(992) 914-3999").then(
-  console.log
-);
-//=================================================================================
+const { program } = require("commander");
+program
+  .option("-a, --action <type>", "choose action")
+  .option("-i, --id <type>", "user id")
+  .option("-n, --name <type>", "user name")
+  .option("-e, --email <type>", "user email")
+  .option("-p, --phone <type>", "user phone");
+
+program.parse(process.argv);
+const argv = program.opts();
+
+async function invokeAction({ action, id, name, email, phone }) {
+  switch (action) {
+    case "list":
+      const contactList = await listContacts();
+      console.log(contactList);
+      break;
+
+    case "get":
+      const contactById = await getContactById(id);
+      console.log(contactById);
+      break;
+
+    case "add":
+      const addNewContact = await addContact(name, email, phone);
+      console.log(addNewContact);
+      break;
+
+    case "remove":
+      const rmContactById = await removeContact(id);
+      console.log(rmContactById);
+      break;
+
+    default:
+      console.warn("\x1B[31m Unknown action type!");
+  }
+}
+
+invokeAction(argv);
+
+// =============console commands=======================
+// node index --action list
+// node index --action get --id e6ywwRe4jcqxXfCZOj_1e
+// node index --action add --name "Allen Raymond" --email "nulla.ante@vestibul.co.uk" --phone "(992) 914-3999"
+// node index --action remove --id AeHIrLTr6JkxGE6SN-0Rw
+// ======================================================
