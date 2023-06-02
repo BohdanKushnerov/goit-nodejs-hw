@@ -34,8 +34,8 @@ async function invokeAction({ action, id, name, email, phone }) {
       break;
 
     case "remove":
-      const rmContactById = await removeContact(id);
-      console.log(rmContactById);
+      const removeContactById = await removeContact(id);
+      console.log(removeContactById);
       break;
 
     default:
@@ -44,10 +44,3 @@ async function invokeAction({ action, id, name, email, phone }) {
 }
 
 invokeAction(argv);
-
-// =============console commands=======================
-// node index --action list
-// node index --action get --id e6ywwRe4jcqxXfCZOj_1e
-// node index --action add --name "Allen Raymond" --email "nulla.ante@vestibul.co.uk" --phone "(992) 914-3999"
-// node index --action remove --id AeHIrLTr6JkxGE6SN-0Rw
-// ======================================================
