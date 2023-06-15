@@ -5,48 +5,32 @@ const path = require("path");
 const contactsPath = path.join(__dirname, "db", "contacts.json");
 
 async function listContacts() {
-  try {
-    const data = await fs.readFile(contactsPath);
-    return JSON.parse(data.toString());
-  } catch (error) {
-    console.log(error.message);
-  }
+  const data = await fs.readFile(contactsPath);
+  return JSON.parse(data.toString());
 }
 
 async function getContactById(contactId) {
-  try {
-    const contacts = await listContacts();
-    return contacts.find((contact) => contact.id === contactId) || null;
-  } catch (error) {
-    console.log(error.message);
-  }
+  const contacts = await listContacts();
+  return contacts.find((contact) => contact.id === contactId) || null;
 }
 
 async function removeContact(contactId) {
-  try {
-    const contacts = await listContacts();
-    const index = contacts.findIndex((item) => item.id === contactId);
-    if (index === -1) return null;
+  const contacts = await listContacts();
+  const index = contacts.findIndex((item) => item.id === contactId);
+  if (index === -1) return null;
 
-    const [result] = contacts.splice(index, 1);
-    await fs.writeFile(contactsPath, JSON.stringify(contacts, null, 2));
-    return result;
-  } catch (error) {
-    console.log(error.message);
-  }
+  const [result] = contacts.splice(index, 1);
+  await fs.writeFile(contactsPath, JSON.stringify(contacts, null, 2));
+  return result;
 }
 
 async function addContact(name, email, phone) {
-  try {
-    const contacts = await listContacts();
-    const newContact = { id: uuidv4(), name, email, phone };
+  const contacts = await listContacts();
+  const newContact = { id: uuidv4(), name, email, phone };
 
-    contacts.push(newContact);
-    await fs.writeFile(contactsPath, JSON.stringify(contacts, null, 2));
-    return newContact;
-  } catch (error) {
-    console.log(error.message);
-  }
+  contacts.push(newContact);
+  await fs.writeFile(contactsPath, JSON.stringify(contacts, null, 2));
+  return newContact;
 }
 
 module.exports = {
